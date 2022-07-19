@@ -34,6 +34,8 @@ The output files are distinguished between dense, normal and sparsely spread top
 * `normal`: mean distance between cells is between 100 meters and 500 meters
 * `sparsely`: mean distance between cells is greater than 500 meters
 
+TODO: generate ether topology in `generate_ether_topology.py`
+
 ###Utils
 `calc_distance(lon1, lat1, lon2, lat2)`:<br> Returns the distance in kilometers between two points.
 <br><br>
