@@ -17,6 +17,6 @@ if __name__ == '__main__':
                     'created', 'updated', 'averageSignal']
     df = pd.read_csv('data/cells_data/cell_towers.csv',
                             skipinitialspace=True, usecols=col_list)
-    df.drop(['mcc', 'net', 'area', 'unit', 'samples', 'changeable', 'created', 'updated', 'averageSignal'], axis=1, inplace=True)
+    df.drop(['mcc', 'net', 'area', 'unit', 'range', 'samples', 'changeable', 'created', 'updated', 'averageSignal'], axis=1, inplace=True)
     df = df[df["radio"].str.contains(args.radio) == True]
     df.to_csv('data/cells_data/cell_towers_filtered.csv')
