@@ -4,3 +4,7 @@ venv
 map.png
 .idea
 temp
+topologies/dense/*.csv
+topologies/normal/*.csv
+topologies/sparsely/*.csv
+__pycache__
