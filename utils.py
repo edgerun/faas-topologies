@@ -1,5 +1,12 @@
+import csv
 import math
+import os
+
 import geopy.distance
+import pandas as pd
+from matplotlib import pyplot as plt
+
+# filter dataset utils
 
 def calc_distance(lon1, lat1, lon2, lat2):
     coords_1 = (lon1, lat1)
@@ -36,3 +43,46 @@ def isfloat(num):
         return True
     except ValueError:
         return False
+
+def saveCells(p, df, name, area):
+    path = 'topologies/' + p + '/' + name + "_" + str(round(area, 2)) + 'km2'
+    with open(path + '.csv', 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(df.head())
+        writer.writerows(df.values)
+
+
+# generate topology utils
+
+def load_Topology(path):
+    col_list = ['radio', 'cell', 'lon', 'lat', 'distances']
+    print("load cell dataset...")
+    df = pd.read_csv(path,
+                     skipinitialspace=True, usecols=col_list)
+    return df
+
+def createGraph(dataframe, density):
+    nodes = {}
+    for n in dataframe.values:
+        nodes[n[1]] = float(n[4])
+    sorted_nodes = dict(sorted(nodes.items(), key=lambda x: x[1]))
+    i = 1
+    num_items = len(sorted_nodes.keys()) * density
+    print(num_items)
+    x = math.ceil(len(sorted_nodes.keys()) / num_items)
+    for k in sorted_nodes.keys():
+        if i % x != 0:
+            dataframe.drop(dataframe[dataframe['cell'] == k].index, inplace=True)
+        i = i + 1
+    return dataframe
+
+def savePlot(df, path, name):
+    plt.scatter(df['lat'], df['lon'])
+    plt.title("Cells in " + name)
+    plt.xlabel('Latitude')
+    plt.ylabel('Longitude')
+    if not os.path.isdir(path):
+        os.makedirs(path)
+    plt.savefig(path + "/" + name + ".png")
+    df.to_csv(path + "/" + name + ".csv")
+    plt.close()

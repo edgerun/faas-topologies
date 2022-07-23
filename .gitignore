@@ -7,4 +7,5 @@ temp
 topologies/dense/*.csv
 topologies/normal/*.csv
 topologies/sparsely/*.csv
+output
 __pycache__

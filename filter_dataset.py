@@ -1,38 +1,20 @@
 import argparse
 import time
-
-import math
 import numpy as np
 import pandas as pd
 import sys
-import csv
-import matplotlib.pyplot as plt
-import plotly.express as px
-from sklearn.cluster import KMeans
 
-from utils import isfloat, calc_distance, get_max_bounds, get_rectangle_bounds
+from utils import isfloat, calc_distance, get_max_bounds, get_rectangle_bounds, saveCells
 from geopy.geocoders import Nominatim
 from sklearn.neighbors import BallTree
-
-def saveCells(p, df, name, area):
-    path = 'topologies/' + p + '/' + name + "_" + str(round(area, 2)) + 'km2'
-    with open(path + '.csv', 'w') as f:
-        writer = csv.writer(f)
-        writer.writerow(df.head())
-        writer.writerows(df.values)
-
-def setDensity(df, density):
-    # TODO: remove entries by the entered <density> (uniform distributed by the locations)
-    print("set density...")
-    return df
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Create topology from center point")
     parser.add_argument(
-        '--n',
+        '--name',
         help='name for topology')
     parser.add_argument(
-        '--c',
+        '--city',
         help='name of city')
     parser.add_argument(
         '--lat',
@@ -41,23 +23,16 @@ if __name__ == '__main__':
         '--lon',
         help='longitude')
     parser.add_argument(
-        '--w',
+        '--width',
         help='width of area (default 2.0 km)')
     parser.add_argument(
-        '--h',
+        '--height',
         help='height of area (default 2.0 km)')
-    parser.add_argument(
-        '--d',
-        help='density of network nodes: 0.0 - 1.0 (0.0 = only one network node, 1.0 = every cell is a network node [default])')
     args = parser.parse_args()
 
     start = time.time()
     lat = None
     lon = None
-    density = 1.0
-
-    if args.density is not None and isfloat(args.density) and 0.0 >= args.density <= 1.0:
-        density = args.density
 
     if args.name is None:
         print("Please set --name of topology!")
@@ -105,7 +80,6 @@ if __name__ == '__main__':
     print("Filter cells in area...")
     df_towers = df_towers[df_towers['lon'].between(lon_min, lon_max, inclusive="both")]
     df_towers = df_towers[df_towers['lat'].between(lat_min, lat_max, inclusive="both")]
-    df_towers = setDensity(df_towers, density)
 
     # get max bounds of df --> [max_lat, min_lat, max_lon, min_lon]
     number_cells = len(df_towers)
@@ -120,11 +94,15 @@ if __name__ == '__main__':
 
         query_lats = df_towers['lat']
         query_lons = df_towers['lon']
-        print(number_cells)
+
         k = 3
         if number_cells < 3:
             k = 1
         distances, indices = tree.query(np.deg2rad(np.c_[query_lats, query_lons]), k=k)
+        df_distances = []
+        for d in distances:
+            df_distances.append(sum(d))
+        df_towers['distances'] = df_distances
         r_km = 6371
         di = []
         for d in distances:
@@ -136,15 +114,15 @@ if __name__ == '__main__':
 
         # if mean distance > 0.5km => sparsely
         if mean_distance > 0.5:
-            print("sparsely")
+            print("sparsely dataset created...")
             saveCells("sparsely", df_towers, args.name, area)
         # if mean distance >= 0.1 and <= 0.5km => normal
         elif 0.1 < mean_distance <= 0.5:
-            print("normal")
+            print("normal dataset created...")
             saveCells("normal", df_towers, args.name, area)
         # if mean distance <= 0.1km => dense
         else:
-            print("dense")
+            print("dense dataset created...")
             saveCells("dense", df_towers, args.name, area)
 
     else:
