@@ -61,15 +61,17 @@ def load_Topology(path):
                      skipinitialspace=True, usecols=col_list)
     return df
 
-def createGraph(dataframe, density):
+def setDensity(dataframe, density):
     nodes = {}
     for n in dataframe.values:
         nodes[n[1]] = float(n[4])
     sorted_nodes = dict(sorted(nodes.items(), key=lambda x: x[1]))
     i = 1
     num_items = len(sorted_nodes.keys()) * density
-    print(num_items)
     x = math.ceil(len(sorted_nodes.keys()) / num_items)
+
+    # drop rows ordered by "distances" regarding the density (e.g. density=0.2 -> Drop 80% of the cells)
+    # sort first to have a uniformed drop distribution
     for k in sorted_nodes.keys():
         if i % x != 0:
             dataframe.drop(dataframe[dataframe['cell'] == k].index, inplace=True)

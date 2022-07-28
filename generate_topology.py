@@ -2,10 +2,10 @@ import argparse
 import os.path
 import sys
 
-from utils import savePlot, isfloat, load_Topology, createGraph
+from utils import savePlot, isfloat, load_Topology, setDensity
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="Generate Ether Topology")
+    parser = argparse.ArgumentParser(description="Generate Topology")
     parser.add_argument('--path', help='path to topology csv')
     parser.add_argument('--name', help='naming of the topology output files')
     parser.add_argument(
@@ -30,8 +30,10 @@ if __name__ == '__main__':
             print("File must has a csv extension!")
         else:
             df = load_Topology(args.path)
+            # save plot before density
             savePlot(df, "output/no_density/" + str(args.density), args.name)
-            df = createGraph(df, float(args.density))
+            df = setDensity(df, float(args.density))
+            # save plot after density
             savePlot(df, "output/density/" + str(args.density), args.name)
     else:
         print("File does not exist!")

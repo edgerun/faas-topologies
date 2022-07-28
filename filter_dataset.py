@@ -98,11 +98,17 @@ if __name__ == '__main__':
         k = 3
         if number_cells < 3:
             k = 1
+        # get distances to k nearest neighbours
         distances, indices = tree.query(np.deg2rad(np.c_[query_lats, query_lons]), k=k)
+
+        # sum up top k distances and add to dataframe
         df_distances = []
         for d in distances:
             df_distances.append(sum(d))
         df_towers['distances'] = df_distances
+
+
+        # calculate mean distance top k nearest neighbours per cell
         r_km = 6371
         di = []
         for d in distances:
@@ -110,6 +116,8 @@ if __name__ == '__main__':
             d = d[d != 0.]
             if len(d) > 0:
                 di.append(d.mean() * r_km)
+
+        # overall mean distance per cell
         mean_distance = np.mean(di)
 
         # if mean distance > 0.5km => sparsely
