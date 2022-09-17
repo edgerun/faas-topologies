@@ -2,22 +2,24 @@ import argparse
 import os.path
 import sys
 
-from utils import savePlot, isfloat, load_Topology, setDensity
+from utils import savePlot, isfloat, load_Topology, setDensity, associateWithCloudlets
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate Topology")
     parser.add_argument('--path', help='path to topology csv')
     parser.add_argument('--name', help='naming of the topology output files')
     parser.add_argument(
-        '--density',
-        help='prune the available nodes by the density (0-1 in percent)',
-        default=1)
+        '--cloudletarea',
+        help='cloudlet area in km2')
     args = parser.parse_args()
-    if not isfloat(args.density):
-        print("density must be type: float!")
+    if args.cloudletarea is None:
+        print("Please set --cloudletarea!")
         sys.exit()
-    if not 0 < float(args.density) <= 1:
-        print("density must be between 0 and 1!")
+    if not isfloat(args.cloudletarea):
+        print("cloudletarea must be type: float!")
+        sys.exit()
+    if not 0.1 <= float(args.cloudletarea) <= 1:
+        print("cloudlet area must be between 0.1 and 1 km2!")
         sys.exit()
     if args.path is None:
         print("Please set --path!")
@@ -30,11 +32,9 @@ if __name__ == '__main__':
             print("File must has a csv extension!")
         else:
             df = load_Topology(args.path)
-            # save plot before density
-            savePlot(df, "output/no_density/" + str(args.density), args.name)
-            df = setDensity(df, float(args.density))
-            # save plot after density
-            savePlot(df, "output/density/" + str(args.density), args.name)
+            # savePlot(df, "output/cloudletarea/" + str(args.cloudletarea), args.name)
+            df = associateWithCloudlets(df, float(args.cloudletarea))
+            savePlot(df, "output/cloudletarea/" + str(args.cloudletarea), args.name)
     else:
         print("File does not exist!")
         sys.exit()

@@ -75,7 +75,7 @@ if __name__ == '__main__':
     col_list = ['radio', 'cell', 'lon', 'lat']
 
     print("Loading cell dataset...")
-    df_towers = pd.read_csv('data/cells_data/cell_towers_filtered.csv',
+    df_towers = pd.read_csv('data/cells_data/cell_towers_prepared.csv',
                             skipinitialspace=True, usecols=col_list)
     print("Filter cells in area...")
     df_towers = df_towers[df_towers['lon'].between(lon_min, lon_max, inclusive="both")]
@@ -102,10 +102,10 @@ if __name__ == '__main__':
         distances, indices = tree.query(np.deg2rad(np.c_[query_lats, query_lons]), k=k)
 
         # sum up top k distances and add to dataframe
-        df_distances = []
-        for d in distances:
-            df_distances.append(sum(d))
-        df_towers['distances'] = df_distances
+        # df_distances = []
+        # for d in distances:
+        #   df_distances.append(sum(d))
+        # df_towers['distances'] = df_distances
 
 
         # calculate mean distance top k nearest neighbours per cell
