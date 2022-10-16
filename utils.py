@@ -39,7 +39,7 @@ def get_rectangle_bounds(coordinates, width, length):
     return bounds
 
 def radius(B):
-    B=math.radians(B)
+    B = math.radians(B)
     a = 6378.137  # Radius at sea level at equator
     b = 6356.752  # Radius at poles
     c = (a**2*math.cos(B))**2
@@ -103,24 +103,6 @@ def associateWithCloudlets(dataframe, area):
             new_lat = addKmToLat(new_lat, w)
             dataframe.loc[(dataframe['lon'].between(old_lon, new_lon, inclusive="both")) & (dataframe['lat'].between(old_lat, new_lat, inclusive="both")), "cloudlet"] = i
             i = i + 1
-    return dataframe
-
-
-def setDensity(dataframe, density):
-    nodes = {}
-    for n in dataframe.values:
-        nodes[n[1]] = float(n[4])
-    sorted_nodes = dict(sorted(nodes.items(), key=lambda x: x[1]))
-    i = 1
-    num_items = len(sorted_nodes.keys()) * density
-    x = math.ceil(len(sorted_nodes.keys()) / num_items)
-
-    # drop rows ordered by "distances" regarding the density (e.g. density=0.2 -> Drop 80% of the cells)
-    # sort first to have a uniformed drop distribution
-    for k in sorted_nodes.keys():
-        if i % x != 0:
-            dataframe.drop(dataframe[dataframe['cell'] == k].index, inplace=True)
-        i = i + 1
     return dataframe
 
 def segmentation_cmap():

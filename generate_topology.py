@@ -2,7 +2,7 @@ import argparse
 import os.path
 import sys
 
-from utils import savePlot, isfloat, load_Topology, setDensity, associateWithCloudlets
+from utils import savePlot, isfloat, load_Topology, associateWithCloudlets
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate Topology")

@@ -27,21 +27,13 @@ http://wiki.opencellid.org/wiki/Glossary
 After downloading the `.csv` database file, the dataset has to be prepared for further use.
 Use `python prepare_dataset.py --radio "LTE"` to filter the database for LTE (UMTS, GMS, CDMA) radio cells and drop unnecessary columns. The output file is saved in `data/cells_data/cell_towers_filtered.csv`.
 
-##Generate Topology
-Use `python create_topology.py --n vienna --c Vienna --w 1 --h 1` to create a list of cells `[(radio, cell, lon, lat), ...]` saved as`.csv` file regarding the committed width `--w`, height `--h` in kilometers, coordinate `--lat`, `--lon` or city `--city`. The density can e.g. be set with the parameter `--d 0,6`.
+##Filter Topology
+Use `python filter_dataset.py --name vienna --city Vienna --width 2 --height 2` to create a list of cells `[(radio, cell, lon, lat), ...]` saved as`.csv` file regarding the committed width `--width`, height `--height` in kilometers, coordinate `--lat`, `--lon` or city `--city`.
 The output files are distinguished between dense, normal and sparsely spread topologies and calculated as followed:
 * `dense`: mean distance between cells is smaller than 100 meters
 * `normal`: mean distance between cells is between 100 meters and 500 meters
 * `sparsely`: mean distance between cells is greater than 500 meters
 
-TODO: generate ether topology in `generate_ether_topology.py`
-
-###Utils
-`calc_distance(lon1, lat1, lon2, lat2)`:<br> Returns the distance in kilometers between two points.
-<br><br>
-`get_max_bounds(df)`:<br> Returns the maximal and minimal latitude and longitude `[max_lat, min_lat, max_lon, min_lon]` of a given dataframe.
-<br><br>
-`get_rectangle_bounds(coordinates, width, length)`:<br> Returns the the outer bounds of a given center coordinate and a given area (width & height).
-<br><br>
-`isfloat(num)`:<br> Returns if a given number has the data type `float`.
-
+##Generate Topology
+Use `python generate_topology.py --name newyork_dense --path topologies/dense/newyork_2km2.csv --cloudletarea 0.5` to associate every cell with a cloudlet number and save it as `.csv`.
+The file is going to be saved in an own folder, named by the cloudlet area size. (e.g. `output/cloudletarea/0.5/newyork_dense.csv`).
