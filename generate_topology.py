@@ -8,9 +8,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate Topology")
     parser.add_argument('--path', help='path to topology csv')
     parser.add_argument('--name', help='naming of the topology output files')
-    parser.add_argument(
-        '--cloudletarea',
-        help='cloudlet area in km2')
+    parser.add_argument('--cloudletarea', help='cloudlet area in km2')
     args = parser.parse_args()
     if args.cloudletarea is None:
         print("Please set --cloudletarea!")
@@ -32,9 +30,9 @@ if __name__ == '__main__':
             print("File must has a csv extension!")
         else:
             df = load_Topology(args.path)
-            # savePlot(df, "output/cloudletarea/" + str(args.cloudletarea), args.name)
+            # savePlot(df, "output",  args.name)
             df = associateWithCloudlets(df, float(args.cloudletarea))
-            savePlot(df, "output/cloudletarea/" + str(args.cloudletarea), args.name)
+            # savePlot(df, "output", args.name)
     else:
         print("File does not exist!")
         sys.exit()

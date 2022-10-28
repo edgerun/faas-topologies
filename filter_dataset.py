@@ -123,15 +123,15 @@ if __name__ == '__main__':
         # if mean distance > 0.5km => sparsely
         if mean_distance > 0.5:
             print("sparsely dataset created...")
-            saveCells("sparsely", df_towers, args.name, area)
+            saveCells(df_towers, args.name)
         # if mean distance >= 0.1 and <= 0.5km => normal
         elif 0.1 < mean_distance <= 0.5:
             print("normal dataset created...")
-            saveCells("normal", df_towers, args.name, area)
+            saveCells(df_towers, args.name)
         # if mean distance <= 0.1km => dense
         else:
             print("dense dataset created...")
-            saveCells("dense", df_towers, args.name, area)
+            saveCells(df_towers, args.name)
 
     else:
         print("no cells found in this area")

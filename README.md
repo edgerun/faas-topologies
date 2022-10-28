@@ -29,7 +29,7 @@ Use `python prepare_dataset.py --radio "LTE"` to filter the database for LTE (UM
 
 ##Filter Topology
 Use `python filter_dataset.py --name vienna --city Vienna --width 2 --height 2` to create a list of cells `[(radio, cell, lon, lat), ...]` saved as`.csv` file regarding the committed width `--width`, height `--height` in kilometers, coordinate `--lat`, `--lon` or city `--city`.
-The output files are distinguished between dense, normal and sparsely spread topologies and calculated as followed:
+The topologies are distinguished between dense, normal and sparsely spread topologies and calculated as followed:
 * `dense`: mean distance between cells is smaller than 100 meters
 * `normal`: mean distance between cells is between 100 meters and 500 meters
 * `sparsely`: mean distance between cells is greater than 500 meters

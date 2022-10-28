@@ -64,8 +64,8 @@ def addKmToLon(lon, lat, dx):
     new_longitude = lon + (dx / radius(lat)) * (180 / math.pi) / math.cos(lat * math.pi / 180)
     return new_longitude
 
-def saveCells(p, df, name, area):
-    path = 'topologies/' + p + '/' + name + "_" + str(round(area, 2)) + 'km2'
+def saveCells(df, name):
+    path = 'topologies/' + name
     with open(path + '.csv', 'w') as f:
         writer = csv.writer(f)
         writer.writerow(df.head())
