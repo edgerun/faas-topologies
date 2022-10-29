@@ -8,16 +8,20 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Generate Topology")
     parser.add_argument('--path', help='path to topology csv')
     parser.add_argument('--name', help='naming of the topology output files')
-    parser.add_argument('--cloudletarea', help='cloudlet area in km2')
+    parser.add_argument('--width', help='cloudlet width in km')
+    parser.add_argument('--height', help='cloudlet height in km')
     args = parser.parse_args()
-    if args.cloudletarea is None:
-        print("Please set --cloudletarea!")
+    if args.width is None:
+        print("Please set --width!")
         sys.exit()
-    if not isfloat(args.cloudletarea):
-        print("cloudletarea must be type: float!")
+    if args.height is None:
+        print("Please set --height!")
         sys.exit()
-    if not 0.1 <= float(args.cloudletarea) <= 1:
-        print("cloudlet area must be between 0.1 and 1 km2!")
+    if not isfloat(args.width):
+        print("width must be type: float!")
+        sys.exit()
+    if not isfloat(args.height):
+        print("height must be type: float!")
         sys.exit()
     if args.path is None:
         print("Please set --path!")
@@ -31,8 +35,8 @@ if __name__ == '__main__':
         else:
             df = load_Topology(args.path)
             # savePlot(df, "output",  args.name)
-            df = associateWithCloudlets(df, float(args.cloudletarea))
-            # savePlot(df, "output", args.name)
+            df = associateWithCloudlets(df, float(args.width), float(args.height))
+            savePlot(df, "output", args.name)
     else:
         print("File does not exist!")
         sys.exit()

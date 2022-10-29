@@ -81,8 +81,7 @@ def load_Topology(path):
                      skipinitialspace=True, usecols=col_list)
     return df
 
-def associateWithCloudlets(dataframe, area):
-    w = math.sqrt(area)
+def associateWithCloudlets(dataframe, w, h):
     # [max_lat, min_lat, max_lon, min_lon]
     max_bounds = get_max_bounds(dataframe)
     max_lat = max_bounds[0]
@@ -97,7 +96,7 @@ def associateWithCloudlets(dataframe, area):
     while new_lon <= max_lon:
         new_lat = min_lat
         old_lon = new_lon
-        new_lon = addKmToLon(old_lon, new_lat, w)
+        new_lon = addKmToLon(old_lon, new_lat, h)
         while new_lat <= max_lat:
             old_lat = new_lat
             new_lat = addKmToLat(new_lat, w)
