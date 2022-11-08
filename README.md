@@ -29,11 +29,7 @@ Use `python prepare_dataset.py --radio "LTE"` to filter the database for LTE (UM
 
 ##Filter Topology
 Use `python filter_dataset.py --name vienna --city Vienna --width 2 --height 2` to create a list of cells `[(radio, cell, lon, lat), ...]` saved as`.csv` file regarding the committed width `--width`, height `--height` in kilometers, coordinate `--lat`, `--lon` or city `--city`.
-The topologies are distinguished between dense, normal and sparsely spread topologies and calculated as followed:
-* `dense`: mean distance between cells is smaller than 100 meters
-* `normal`: mean distance between cells is between 100 meters and 500 meters
-* `sparsely`: mean distance between cells is greater than 500 meters
 
-##Generate Topology
-Use `python generate_topology.py --name newyork_dense --path topologies/dense/newyork_2km2.csv --cloudletarea 0.5` to associate every cell with a cloudlet number and save it as `.csv`.
-The file is going to be saved in an own folder, named by the cloudlet area size. (e.g. `output/cloudletarea/0.5/newyork_dense.csv`).
+##Create Cloudlet Membership
+Use `python create_cloudlet_membership.py --name newyork_2x2_1x1 --path topologies/newyork_2x2.csv --width 1 --height 1` to associate every cell with a cloudlet number and save it as `.csv`.
+The file is going to be saved in `output/`. Also, an image with the cloudlet division is going to be saved there.

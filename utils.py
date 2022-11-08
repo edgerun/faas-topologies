@@ -81,6 +81,13 @@ def load_Topology(path):
                      skipinitialspace=True, usecols=col_list)
     return df
 
+def load_Cloudlet_Topology(path):
+    col_list = ['radio', 'cell', 'lon', 'lat', 'cloudlet']
+    print("load cell dataset...")
+    df = pd.read_csv(path,
+                     skipinitialspace=True, usecols=col_list)
+    return df
+
 def associateWithCloudlets(dataframe, w, h):
     # [max_lat, min_lat, max_lon, min_lon]
     max_bounds = get_max_bounds(dataframe)
