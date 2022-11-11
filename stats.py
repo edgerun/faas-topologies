@@ -11,5 +11,4 @@ if __name__ == '__main__':
         cloudletDfs = dict(tuple(df.groupby('cloudlet')))
         print(c + ":")
         for i, df in cloudletDfs.items():
-            if len(df) > 1:
                 print(str(i) + ": " + str(len(df)))

@@ -97,18 +97,18 @@ def associateWithCloudlets(dataframe, w, h):
     min_lon = max_bounds[3]
     dataframe["cloudlet"] = 0
     new_lon = min_lon
-    old_lon = new_lon
     new_lat = min_lat
     i = 0
     while new_lon <= max_lon:
-        new_lat = min_lat
         old_lon = new_lon
-        new_lon = addKmToLon(old_lon, new_lat, h)
+        new_lat = min_lat
+        new_lon = addKmToLon(old_lon, new_lat, h + 0.001)
         while new_lat <= max_lat:
             old_lat = new_lat
-            new_lat = addKmToLat(new_lat, w)
+            new_lat = addKmToLat(new_lat, w + 0.001)
             dataframe.loc[(dataframe['lon'].between(old_lon, new_lon, inclusive="both")) & (dataframe['lat'].between(old_lat, new_lat, inclusive="both")), "cloudlet"] = i
             i = i + 1
+
     return dataframe
 
 def segmentation_cmap():
@@ -118,7 +118,6 @@ def segmentation_cmap():
 
 def savePlot(df, path, name):
     plt.scatter(df['lon'], df['lat'], c=df['cloudlet'],s=2, cmap=segmentation_cmap())
-    plt.title("Cells in " + name)
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
     if not os.path.isdir(path):
