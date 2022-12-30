@@ -68,7 +68,7 @@ def saveCells(df, name):
     path = 'topologies/' + name
     with open(path + '.csv', 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(df.head())
+        writer.writerow(df.columns)
         writer.writerows(df.values)
 
 
