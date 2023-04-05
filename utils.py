@@ -122,6 +122,6 @@ def savePlot(df, path, name):
     plt.ylabel('Latitude')
     if not os.path.isdir(path):
         os.makedirs(path)
-    plt.savefig(path + "/" + name + ".png")
+    plt.savefig(path + "/" + name + ".pdf")
     df.to_csv(path + "/" + name + ".csv")
     plt.close()
