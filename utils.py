@@ -115,9 +115,24 @@ def segmentation_cmap():
     vals = np.linspace(0, 1, 256)
     np.random.shuffle(vals)
     return plt.cm.colors.ListedColormap(plt.cm.CMRmap(vals))
-
+def createColorMapping(df):
+    print(df)
+    color = {}
+    for k, e in enumerate(df):
+        if e == 0:
+            df[k] = "#000000"
+        if e == 1:
+            df[k] = "#FF0000"
+        if e == 2:
+            df[k] = "#0000FF"
+        if e == 3:
+            df[k] = "#008000"
+    return df
 def savePlot(df, path, name):
-    plt.scatter(df['lon'], df['lat'], c=df['cloudlet'],s=2, cmap=segmentation_cmap())
+    df = df.loc[df['cloudlet'] == 1, 'cloudlet'] = "#FF0000"
+    df = df.loc[df['cloudlet'] == 2, 'cloudlet'] = "#0000FF"
+    df = df.loc[df['cloudlet'] == 3, 'cloudlet'] = "#008000"
+    plt.scatter(df['lon'], df['lat'], c=createColorMapping(df['cloudlet']),s=2, cmap=segmentation_cmap())
     plt.xlabel('Longitude')
     plt.ylabel('Latitude')
     if not os.path.isdir(path):
